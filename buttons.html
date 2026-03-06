@@ -510,16 +510,8 @@
   <span id="toastMsg"></span>
 </div>
 
-<!-- Chat slide-out -->
-<div class="chat-overlay" id="chatOverlay" onclick="toggleChat()"></div>
+<!-- Chat button -->
 <button class="chat-toggle" id="chatToggle" onclick="toggleChat()" title="Open Chat">💬</button>
-<div class="chat-panel" id="chatPanel">
-  <div class="chat-panel-header">
-    <span>Staff Support Chat</span>
-    <button class="chat-panel-close" onclick="toggleChat()">✕</button>
-  </div>
-  <iframe id="chatFrame" src="about:blank" allow="clipboard-write"></iframe>
-</div>
 
 <script>
   const roomInput = document.getElementById('roomInput');
@@ -598,23 +590,9 @@
 
   // Chat panel
   const CHAT_URL = 'https://chat.google.com/room/AAAAiOwecko?cls=7';
-  const chatPanel = document.getElementById('chatPanel');
-  const chatOverlay = document.getElementById('chatOverlay');
-  const chatFrame = document.getElementById('chatFrame');
-  let chatOpen = false;
-  let chatLoaded = false;
 
   function toggleChat() {
-    chatOpen = !chatOpen;
-    chatPanel.classList.toggle('open', chatOpen);
-    chatOverlay.classList.toggle('show', chatOpen);
-    document.getElementById('chatToggle').textContent = chatOpen ? '✕' : '💬';
-
-    // Lazy-load iframe on first open
-    if (chatOpen && !chatLoaded) {
-      chatFrame.src = CHAT_URL;
-      chatLoaded = true;
-    }
+    window.open(CHAT_URL, '_blank');
   }
 
   // Auto-focus on load
