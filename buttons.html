@@ -289,7 +289,7 @@
 </head>
 <body>
 
-<div class="demo-banner">DEMO — Not connected to Google Chat yet</div>
+<div class="demo-banner" id="demoBanner" style="display:none">Not connected — set RELAY_URL in code</div>
 
 <div class="container">
   <div class="logo-area">
@@ -360,9 +360,15 @@
       red: '#ef4444'
     };
 
-    // --- DEMO MODE ---
-    // When the webhook is ready, replace this block with a fetch() to your Apps Script relay
-    console.log(`[DEMO] Room: ${room} | Priority: ${label} (${color})`);
+    // Apps Script relay URL - replace with your deployed web app URL
+    const RELAY_URL = 'https://script.google.com/macros/s/AKfycbzPmM-Pb7L0hGibIgjoMN6KT0galUGc7yAcntK8KXhAuLvDzs8mIUbag0w3LIqLPKgG/exec';
+    const SECRET_KEY = 'nc3rq7ncqr3nnrcq3'; // must match the key in your Apps Script
+
+    fetch(RELAY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ room: room, level: color, label: label, key: SECRET_KEY })
+    }).catch(err => console.error('Send failed:', err));
 
     // Show toast
     toastDot.style.background = colors[color];
@@ -386,6 +392,11 @@
 
   // Auto-focus on load
   roomInput.focus();
+
+  // Show warning if relay not configured
+  if (RELAY_URL.includes('PASTE_')) {
+    document.getElementById('demoBanner').style.display = 'block';
+  }
 </script>
 </body>
 </html>
