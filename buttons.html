@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>IESV Support Alert</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --card-border: #2a2d3a;
+    --text: #e8e9ed;
+    --text-muted: #8b8fa3;
+    --green: #22c55e;
+    --green-glow: rgba(34, 197, 94, 0.25);
+    --yellow: #eab308;
+    --yellow-glow: rgba(234, 179, 8, 0.25);
+    --red: #ef4444;
+    --red-glow: rgba(239, 68, 68, 0.25);
+    --radius: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow: hidden;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 400px;
+    animation: fadeUp 0.6s ease-out;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .logo-area {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .logo-area h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .logo-area p {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+  }
+
+  .room-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .room-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text);
+    text-align: center;
+    letter-spacing: 0.05em;
+    outline: none;
+    transition: border-color 0.2s;
+    text-transform: uppercase;
+  }
+
+  .room-input::placeholder {
+    color: #3a3d4a;
+    text-transform: none;
+    font-size: 1.25rem;
+  }
+
+  .room-input:focus {
+    border-color: #4a4d5a;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--card-border);
+    margin: 24px 0;
+  }
+
+  .priority-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 12px;
+  }
+
+  .alert-btn {
+    flex: 1;
+    border: none;
+    border-radius: 14px;
+    padding: 20px 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.15s ease, box-shadow 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .alert-btn:active {
+    transform: scale(0.95);
+  }
+
+  .alert-btn .icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .alert-btn .label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Green */
+  .btn-green {
+    background: linear-gradient(145deg, #143d25, #0f2e1c);
+    box-shadow: 0 0 0 1px rgba(34,197,94,0.2);
+  }
+  .btn-green:hover, .btn-green:focus {
+    box-shadow: 0 0 20px var(--green-glow), 0 0 0 1px rgba(34,197,94,0.4);
+  }
+  .btn-green .icon { background: var(--green); color: #052e16; }
+  .btn-green .label { color: var(--green); }
+
+  /* Yellow */
+  .btn-yellow {
+    background: linear-gradient(145deg, #3d3514, #2e280f);
+    box-shadow: 0 0 0 1px rgba(234,179,8,0.2);
+  }
+  .btn-yellow:hover, .btn-yellow:focus {
+    box-shadow: 0 0 20px var(--yellow-glow), 0 0 0 1px rgba(234,179,8,0.4);
+  }
+  .btn-yellow .icon { background: var(--yellow); color: #422d09; }
+  .btn-yellow .label { color: var(--yellow); }
+
+  /* Red */
+  .btn-red {
+    background: linear-gradient(145deg, #3d1414, #2e0f0f);
+    box-shadow: 0 0 0 1px rgba(239,68,68,0.2);
+  }
+  .btn-red:hover, .btn-red:focus {
+    box-shadow: 0 0 20px var(--red-glow), 0 0 0 1px rgba(239,68,68,0.4);
+  }
+  .btn-red .icon { background: var(--red); color: #450a0a; }
+  .btn-red .label { color: var(--red); }
+
+  /* Sent confirmation */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 14px 24px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    pointer-events: none;
+    z-index: 10;
+    white-space: nowrap;
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  .toast .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Shake animation for empty room */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+  }
+
+  .shake {
+    animation: shake 0.4s ease;
+    border-color: var(--red) !important;
+  }
+
+  /* Ripple */
+  .alert-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.15), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .alert-btn:active::after {
+    opacity: 1;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 0.7rem;
+    color: #3a3d4a;
+    letter-spacing: 0.04em;
+  }
+
+  /* Demo banner */
+  .demo-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    color: white;
+    text-align: center;
+    padding: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">DEMO — Not connected to Google Chat yet</div>
+
+<div class="container">
+  <div class="logo-area">
+    <h1>Support Alert</h1>
+    <p>Request classroom support</p>
+  </div>
+
+  <div class="card">
+    <div class="room-label">Room Number</div>
+    <input
+      type="text"
+      class="room-input"
+      id="roomInput"
+      placeholder="e.g. A11"
+      maxlength="6"
+      autocomplete="off"
+      spellcheck="false"
+    >
+
+    <div class="divider"></div>
+
+    <div class="priority-label">What do you need?</div>
+    <div class="buttons">
+      <button class="alert-btn btn-green" onclick="sendAlert('green', 'Cover Me')" title="Cover Me">
+        <div class="icon">✓</div>
+        <div class="label">Cover Me</div>
+      </button>
+      <button class="alert-btn btn-yellow" onclick="sendAlert('yellow', 'Support')" title="Support">
+        <div class="icon">!</div>
+        <div class="label">Support</div>
+      </button>
+      <button class="alert-btn btn-red" onclick="sendAlert('red', 'Urgent')" title="Urgent">
+        <div class="icon">⚠</div>
+        <div class="label">Urgent</div>
+      </button>
+    </div>
+  </div>
+
+  <div class="footer">IESV Classroom Support System</div>
+</div>
+
+<div class="toast" id="toast">
+  <span class="dot" id="toastDot"></span>
+  <span id="toastMsg"></span>
+</div>
+
+<script>
+  const roomInput = document.getElementById('roomInput');
+  const toast = document.getElementById('toast');
+  const toastDot = document.getElementById('toastDot');
+  const toastMsg = document.getElementById('toastMsg');
+
+  let toastTimer;
+
+  function sendAlert(color, label) {
+    const room = roomInput.value.trim().toUpperCase();
+
+    if (!room) {
+      roomInput.classList.add('shake');
+      roomInput.focus();
+      setTimeout(() => roomInput.classList.remove('shake'), 400);
+      return;
+    }
+
+    const colors = {
+      green: '#22c55e',
+      yellow: '#eab308',
+      red: '#ef4444'
+    };
+
+    // --- DEMO MODE ---
+    // When the webhook is ready, replace this block with a fetch() to your Apps Script relay
+    console.log(`[DEMO] Room: ${room} | Priority: ${label} (${color})`);
+
+    // Show toast
+    toastDot.style.background = colors[color];
+    toastMsg.textContent = `${room} — ${label} sent`;
+    toast.classList.add('show');
+
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+
+    // Clear input for next use
+    roomInput.value = '';
+    roomInput.focus();
+  }
+
+  // Allow Enter key to default to yellow (help soon)
+  roomInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && roomInput.value.trim()) {
+      sendAlert('yellow', 'Help Soon');
+    }
+  });
+
+  // Auto-focus on load
+  roomInput.focus();
+</script>
+</body>
+</html>
