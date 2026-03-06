@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>IESV Support Alert</title>
+<link rel="icon" href="ies.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -200,6 +201,62 @@
   .btn-red .icon { background: var(--red); color: #450a0a; }
   .btn-red .label { color: var(--red); }
 
+  /* Resolved */
+  .btn-resolved {
+    width: 100%;
+    margin-top: 12px;
+    flex-direction: row;
+    justify-content: center;
+    padding: 14px 8px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #1a2333, #151c28);
+    box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.2);
+  }
+  .btn-resolved:hover, .btn-resolved:focus {
+    box-shadow: 0 0 20px rgba(96, 165, 250, 0.2), 0 0 0 1px rgba(96, 165, 250, 0.4);
+  }
+  .btn-resolved .icon { background: #60a5fa; color: #1e3a5f; width: 28px; height: 28px; font-size: 0.9rem; }
+  .btn-resolved .label { color: #60a5fa; }
+
+  .resolved-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    align-items: stretch;
+  }
+
+  .resolved-row .btn-resolved {
+    margin-top: 0;
+    width: auto;
+    flex-shrink: 0;
+    padding: 14px 20px;
+  }
+
+  .resolved-input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 10px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    text-transform: uppercase;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .resolved-input::placeholder {
+    color: #3a3d4a;
+    text-transform: none;
+    font-size: 0.8rem;
+  }
+
+  .resolved-input:focus {
+    border-color: #4a4d5a;
+  }
+
   /* Sent confirmation */
   .toast {
     position: fixed;
@@ -293,6 +350,7 @@
 
 <div class="container">
   <div class="logo-area">
+    <img src="logo-negative.png" alt="IES Logo" style="height:48px; margin-bottom:12px; opacity:0.85;">
     <h1>Support Alert</h1>
     <p>Request classroom support</p>
   </div>
@@ -326,6 +384,13 @@
         <div class="label">Urgent</div>
       </button>
     </div>
+    <div class="resolved-row">
+      <button class="alert-btn btn-resolved" onclick="sendResolved()" title="Resolved">
+        <div class="icon">✓</div>
+        <div class="label">Resolved</div>
+      </button>
+      <input type="text" class="resolved-input" id="resolvedRoom" placeholder="Room (optional)" maxlength="30" autocomplete="off" spellcheck="false">
+    </div>
   </div>
 
   <div class="footer">IESV Classroom Support System</div>
@@ -342,6 +407,10 @@
   const toastDot = document.getElementById('toastDot');
   const toastMsg = document.getElementById('toastMsg');
 
+  // Apps Script relay URL - replace with your deployed web app URL
+    const RELAY_URL = 'https://script.google.com/macros/s/AKfycbzPmM-Pb7L0hGibIgjoMN6KT0galUGc7yAcntK8KXhAuLvDzs8mIUbag0w3LIqLPKgG/exec';
+    const SECRET_KEY = 'nc3rq7ncqr3nnrcq3'; // must match the key in your Apps Script
+
   let toastTimer;
 
   function sendAlert(color, label) {
@@ -357,12 +426,9 @@
     const colors = {
       green: '#22c55e',
       yellow: '#eab308',
-      red: '#ef4444'
+      red: '#ef4444',
+      blue: '#60a5fa'
     };
-
-// Apps Script relay URL - replace with your deployed web app URL
-    const RELAY_URL = 'https://script.google.com/macros/s/AKfycbzPmM-Pb7L0hGibIgjoMN6KT0galUGc7yAcntK8KXhAuLvDzs8mIUbag0w3LIqLPKgG/exec';
-    const SECRET_KEY = 'nc3rq7ncqr3nnrcq3'; // must match the key in your Apps Script
 
     fetch(RELAY_URL, {
       method: 'POST',
@@ -380,6 +446,26 @@
 
     // Clear input for next use
     roomInput.value = '';
+    roomInput.focus();
+  }
+
+  function sendResolved() {
+    const room = document.getElementById('resolvedRoom').value.trim().toUpperCase() || 'No room specified';
+
+    fetch(RELAY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ room: room, level: 'blue', label: 'Resolved', key: SECRET_KEY })
+    }).catch(err => console.error('Send failed:', err));
+
+    toastDot.style.background = '#60a5fa';
+    toastMsg.textContent = `${room} — Resolved sent`;
+    toast.classList.add('show');
+
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+
+    document.getElementById('resolvedRoom').value = '';
     roomInput.focus();
   }
 
