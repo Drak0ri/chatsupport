@@ -203,8 +203,6 @@
 
   /* Resolved */
   .btn-resolved {
-    width: 100%;
-    margin-top: 12px;
     flex-direction: row;
     justify-content: center;
     padding: 14px 8px;
@@ -218,30 +216,38 @@
   .btn-resolved .icon { background: #60a5fa; color: #1e3a5f; width: 28px; height: 28px; font-size: 0.9rem; }
   .btn-resolved .label { color: #60a5fa; }
 
-  .resolved-row {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-    align-items: stretch;
+  /* On My Way */
+  .btn-omw {
+    flex-direction: row;
+    justify-content: center;
+    padding: 14px 8px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #2d2314, #231c0f);
+    box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.2);
   }
+  .btn-omw:hover, .btn-omw:focus {
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.2), 0 0 0 1px rgba(251, 191, 36, 0.4);
+  }
+  .btn-omw .icon { background: transparent; width: 28px; height: 28px; font-size: 1.1rem; }
+  .btn-omw .label { color: #fbbf24; }
 
-  .resolved-row .btn-resolved {
-    margin-top: 0;
-    width: auto;
-    flex-shrink: 0;
-    padding: 14px 20px;
+  .response-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
   }
 
   .resolved-input {
-    flex: 1;
+    width: 100%;
     background: var(--bg);
     border: 1px solid var(--card-border);
-    border-radius: 14px;
-    padding: 10px 14px;
+    border-radius: 12px;
+    padding: 12px 16px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: var(--text);
+    text-align: center;
     text-transform: uppercase;
     outline: none;
     transition: border-color 0.2s;
@@ -250,7 +256,7 @@
   .resolved-input::placeholder {
     color: #3a3d4a;
     text-transform: none;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
 
   .resolved-input:focus {
@@ -493,12 +499,20 @@
         <div class="label">Urgent</div>
       </button>
     </div>
-    <div class="resolved-row">
+
+    <div class="divider"></div>
+
+    <div class="priority-label">Respond</div>
+    <input type="text" class="resolved-input" id="resolvedRoom" placeholder="Room (optional)" maxlength="30" autocomplete="off" spellcheck="false">
+    <div class="response-buttons">
+      <button class="alert-btn btn-omw" onclick="sendOMW()" title="On My Way">
+        <div class="icon">🏃</div>
+        <div class="label">On My Way</div>
+      </button>
       <button class="alert-btn btn-resolved" onclick="sendResolved()" title="Resolved">
         <div class="icon">✓</div>
         <div class="label">Resolved</div>
       </button>
-      <input type="text" class="resolved-input" id="resolvedRoom" placeholder="Room (optional)" maxlength="30" autocomplete="off" spellcheck="false">
     </div>
   </div>
 
@@ -572,6 +586,26 @@
 
     toastDot.style.background = '#60a5fa';
     toastMsg.textContent = `${room} — Resolved sent`;
+    toast.classList.add('show');
+
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+
+    document.getElementById('resolvedRoom').value = '';
+    roomInput.focus();
+  }
+
+  function sendOMW() {
+    const room = document.getElementById('resolvedRoom').value.trim().toUpperCase() || 'No room specified';
+
+    fetch(RELAY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ room: room, level: 'omw', label: 'On My Way', key: SECRET_KEY })
+    }).catch(err => console.error('Send failed:', err));
+
+    toastDot.style.background = '#fbbf24';
+    toastMsg.textContent = `${room} — On My Way sent`;
     toast.classList.add('show');
 
     clearTimeout(toastTimer);
