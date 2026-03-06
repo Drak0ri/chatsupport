@@ -429,8 +429,10 @@
   const toastDot = document.getElementById('toastDot');
   const toastMsg = document.getElementById('toastMsg');
 
-  const RELAY_URL = 'PASTE_APPS_SCRIPT_WEB_APP_URL_HERE';
-  const SECRET_KEY = 'PASTE_A_RANDOM_SECRET_HERE';
+// Apps Script relay URL - replace with your deployed web app URL
+    const RELAY_URL = 'https://script.google.com/macros/s/AKfycbzPmM-Pb7L0hGibIgjoMN6KT0galUGc7yAcntK8KXhAuLvDzs8mIUbag0w3LIqLPKgG/exec';
+    const SECRET_KEY = 'nc3rq7ncqr3nnrcq3'; // must match the key in your Apps Script
+
 
   let toastTimer;
 
