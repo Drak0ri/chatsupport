@@ -342,6 +342,115 @@
     letter-spacing: 0.03em;
     z-index: 100;
   }
+
+  /* Chat toggle button */
+  .chat-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(145deg, #2563eb, #1d4ed8);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+    color: white;
+    font-size: 1.4rem;
+    cursor: pointer;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .chat-toggle:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 24px rgba(37, 99, 235, 0.5);
+  }
+
+  .chat-toggle:active {
+    transform: scale(0.95);
+  }
+
+  /* Chat panel */
+  .chat-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 420px;
+    height: 100dvh;
+    background: var(--card);
+    border-left: 1px solid var(--card-border);
+    z-index: 150;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.35s ease;
+  }
+
+  .chat-panel.open {
+    transform: translateX(0);
+  }
+
+  .chat-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--card-border);
+    flex-shrink: 0;
+  }
+
+  .chat-panel-header span {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .chat-panel-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: background 0.15s;
+  }
+
+  .chat-panel-close:hover {
+    background: var(--card-border);
+    color: var(--text);
+  }
+
+  .chat-panel iframe {
+    flex: 1;
+    border: none;
+    width: 100%;
+  }
+
+  /* Overlay behind panel on mobile */
+  .chat-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 140;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s;
+  }
+
+  .chat-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  @media (max-width: 500px) {
+    .chat-panel {
+      width: 100%;
+    }
+  }
 </style>
 </head>
 <body>
@@ -401,13 +510,24 @@
   <span id="toastMsg"></span>
 </div>
 
+<!-- Chat slide-out -->
+<div class="chat-overlay" id="chatOverlay" onclick="toggleChat()"></div>
+<button class="chat-toggle" id="chatToggle" onclick="toggleChat()" title="Open Chat">💬</button>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-panel-header">
+    <span>Staff Support Chat</span>
+    <button class="chat-panel-close" onclick="toggleChat()">✕</button>
+  </div>
+  <iframe id="chatFrame" src="about:blank" allow="clipboard-write"></iframe>
+</div>
+
 <script>
   const roomInput = document.getElementById('roomInput');
   const toast = document.getElementById('toast');
   const toastDot = document.getElementById('toastDot');
   const toastMsg = document.getElementById('toastMsg');
 
-  // Apps Script relay URL - replace with your deployed web app URL
+// Apps Script relay URL - replace with your deployed web app URL
     const RELAY_URL = 'https://script.google.com/macros/s/AKfycbzPmM-Pb7L0hGibIgjoMN6KT0galUGc7yAcntK8KXhAuLvDzs8mIUbag0w3LIqLPKgG/exec';
     const SECRET_KEY = 'nc3rq7ncqr3nnrcq3'; // must match the key in your Apps Script
 
@@ -475,6 +595,27 @@
       sendAlert('yellow', 'Help Soon');
     }
   });
+
+  // Chat panel
+  const CHAT_URL = 'https://chat.google.com/room/AAAAiOwecko?cls=7';
+  const chatPanel = document.getElementById('chatPanel');
+  const chatOverlay = document.getElementById('chatOverlay');
+  const chatFrame = document.getElementById('chatFrame');
+  let chatOpen = false;
+  let chatLoaded = false;
+
+  function toggleChat() {
+    chatOpen = !chatOpen;
+    chatPanel.classList.toggle('open', chatOpen);
+    chatOverlay.classList.toggle('show', chatOpen);
+    document.getElementById('chatToggle').textContent = chatOpen ? '✕' : '💬';
+
+    // Lazy-load iframe on first open
+    if (chatOpen && !chatLoaded) {
+      chatFrame.src = CHAT_URL;
+      chatLoaded = true;
+    }
+  }
 
   // Auto-focus on load
   roomInput.focus();
