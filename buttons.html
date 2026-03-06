@@ -34,7 +34,7 @@
     align-items: center;
     justify-content: center;
     padding: 24px;
-    overflow: hidden;
+    overflow-x: hidden;
   }
 
   .container {
@@ -72,7 +72,7 @@
     padding: 28px 24px;
   }
 
-  .room-label {
+  .field-label {
     font-size: 0.75rem;
     font-weight: 500;
     text-transform: uppercase;
@@ -81,18 +81,47 @@
     margin-bottom: 10px;
   }
 
-  .room-input {
-    width: 100%;
+  .field-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  .name-input {
+    flex: 1;
     background: var(--bg);
     border: 1px solid var(--card-border);
     border-radius: 12px;
-    padding: 16px 18px;
+    padding: 12px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .name-input::placeholder {
+    color: #3a3d4a;
+    font-size: 0.85rem;
+  }
+
+  .name-input:focus {
+    border-color: #4a4d5a;
+  }
+
+  .room-input {
+    flex: 1;
+    min-width: 0;
+    background: var(--bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 12px 14px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1.25rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: var(--text);
     text-align: center;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.03em;
     outline: none;
     transition: border-color 0.2s;
     text-transform: uppercase;
@@ -101,17 +130,43 @@
   .room-input::placeholder {
     color: #3a3d4a;
     text-transform: none;
-    font-size: 1.25rem;
+    font-size: 0.85rem;
   }
 
   .room-input:focus {
     border-color: #4a4d5a;
   }
 
+  .message-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    resize: none;
+    height: 42px;
+    margin-top: 10px;
+  }
+
+  .message-input::placeholder {
+    color: #3a3d4a;
+    font-size: 0.8rem;
+  }
+
+  .message-input:focus {
+    border-color: #4a4d5a;
+  }
+
   .divider {
     height: 1px;
     background: var(--card-border);
-    margin: 24px 0;
+    margin: 20px 0;
   }
 
   .priority-label {
@@ -143,9 +198,7 @@
     overflow: hidden;
   }
 
-  .alert-btn:active {
-    transform: scale(0.95);
-  }
+  .alert-btn:active { transform: scale(0.95); }
 
   .alert-btn .icon {
     width: 40px;
@@ -168,40 +221,30 @@
     z-index: 1;
   }
 
-  /* Green */
   .btn-green {
     background: linear-gradient(145deg, #143d25, #0f2e1c);
     box-shadow: 0 0 0 1px rgba(34,197,94,0.2);
   }
-  .btn-green:hover, .btn-green:focus {
-    box-shadow: 0 0 20px var(--green-glow), 0 0 0 1px rgba(34,197,94,0.4);
-  }
+  .btn-green:hover, .btn-green:focus { box-shadow: 0 0 20px var(--green-glow), 0 0 0 1px rgba(34,197,94,0.4); }
   .btn-green .icon { background: var(--green); color: #052e16; }
   .btn-green .label { color: var(--green); }
 
-  /* Yellow */
   .btn-yellow {
     background: linear-gradient(145deg, #3d3514, #2e280f);
     box-shadow: 0 0 0 1px rgba(234,179,8,0.2);
   }
-  .btn-yellow:hover, .btn-yellow:focus {
-    box-shadow: 0 0 20px var(--yellow-glow), 0 0 0 1px rgba(234,179,8,0.4);
-  }
+  .btn-yellow:hover, .btn-yellow:focus { box-shadow: 0 0 20px var(--yellow-glow), 0 0 0 1px rgba(234,179,8,0.4); }
   .btn-yellow .icon { background: var(--yellow); color: #422d09; }
   .btn-yellow .label { color: var(--yellow); }
 
-  /* Red */
   .btn-red {
     background: linear-gradient(145deg, #3d1414, #2e0f0f);
     box-shadow: 0 0 0 1px rgba(239,68,68,0.2);
   }
-  .btn-red:hover, .btn-red:focus {
-    box-shadow: 0 0 20px var(--red-glow), 0 0 0 1px rgba(239,68,68,0.4);
-  }
+  .btn-red:hover, .btn-red:focus { box-shadow: 0 0 20px var(--red-glow), 0 0 0 1px rgba(239,68,68,0.4); }
   .btn-red .icon { background: var(--red); color: #450a0a; }
   .btn-red .label { color: var(--red); }
 
-  /* Resolved */
   .btn-resolved {
     flex-direction: row;
     justify-content: center;
@@ -210,13 +253,10 @@
     background: linear-gradient(145deg, #1a2333, #151c28);
     box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.2);
   }
-  .btn-resolved:hover, .btn-resolved:focus {
-    box-shadow: 0 0 20px rgba(96, 165, 250, 0.2), 0 0 0 1px rgba(96, 165, 250, 0.4);
-  }
+  .btn-resolved:hover, .btn-resolved:focus { box-shadow: 0 0 20px rgba(96, 165, 250, 0.2), 0 0 0 1px rgba(96, 165, 250, 0.4); }
   .btn-resolved .icon { background: #60a5fa; color: #1e3a5f; width: 28px; height: 28px; font-size: 0.9rem; }
   .btn-resolved .label { color: #60a5fa; }
 
-  /* On My Way */
   .btn-omw {
     flex-direction: row;
     justify-content: center;
@@ -225,9 +265,7 @@
     background: linear-gradient(145deg, #2d2314, #231c0f);
     box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.2);
   }
-  .btn-omw:hover, .btn-omw:focus {
-    box-shadow: 0 0 20px rgba(251, 191, 36, 0.2), 0 0 0 1px rgba(251, 191, 36, 0.4);
-  }
+  .btn-omw:hover, .btn-omw:focus { box-shadow: 0 0 20px rgba(251, 191, 36, 0.2), 0 0 0 1px rgba(251, 191, 36, 0.4); }
   .btn-omw .icon { background: transparent; width: 28px; height: 28px; font-size: 1.1rem; }
   .btn-omw .label { color: #fbbf24; }
 
@@ -253,17 +291,9 @@
     transition: border-color 0.2s;
   }
 
-  .resolved-input::placeholder {
-    color: #3a3d4a;
-    text-transform: none;
-    font-size: 0.85rem;
-  }
+  .resolved-input::placeholder { color: #3a3d4a; text-transform: none; font-size: 0.85rem; }
+  .resolved-input:focus { border-color: #4a4d5a; }
 
-  .resolved-input:focus {
-    border-color: #4a4d5a;
-  }
-
-  /* Sent confirmation */
   .toast {
     position: fixed;
     bottom: 32px;
@@ -284,20 +314,9 @@
     z-index: 10;
     white-space: nowrap;
   }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
-  .toast.show {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-
-  .toast .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  /* Shake animation for empty room */
   @keyframes shake {
     0%, 100% { transform: translateX(0); }
     20% { transform: translateX(-6px); }
@@ -305,13 +324,8 @@
     60% { transform: translateX(-4px); }
     80% { transform: translateX(4px); }
   }
+  .shake { animation: shake 0.4s ease; border-color: var(--red) !important; }
 
-  .shake {
-    animation: shake 0.4s ease;
-    border-color: var(--red) !important;
-  }
-
-  /* Ripple */
   .alert-btn::after {
     content: '';
     position: absolute;
@@ -320,143 +334,28 @@
     opacity: 0;
     transition: opacity 0.3s;
   }
+  .alert-btn:active::after { opacity: 1; }
 
-  .alert-btn:active::after {
-    opacity: 1;
-  }
+  .footer { text-align: center; margin-top: 24px; font-size: 0.7rem; color: #3a3d4a; letter-spacing: 0.04em; }
 
-  .footer {
-    text-align: center;
-    margin-top: 24px;
-    font-size: 0.7rem;
-    color: #3a3d4a;
-    letter-spacing: 0.04em;
-  }
-
-  /* Demo banner */
   .demo-banner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    position: fixed; top: 0; left: 0; right: 0;
     background: linear-gradient(90deg, #6366f1, #8b5cf6);
-    color: white;
-    text-align: center;
-    padding: 6px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.03em;
-    z-index: 100;
+    color: white; text-align: center; padding: 6px;
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.03em; z-index: 100;
   }
 
-  /* Chat toggle button */
   .chat-toggle {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    border: none;
+    position: fixed; bottom: 24px; right: 24px;
+    width: 52px; height: 52px; border-radius: 50%; border: none;
     background: linear-gradient(145deg, #2563eb, #1d4ed8);
     box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
-    color: white;
-    font-size: 1.4rem;
-    cursor: pointer;
-    z-index: 200;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    color: white; font-size: 1.4rem; cursor: pointer; z-index: 200;
+    display: flex; align-items: center; justify-content: center;
     transition: transform 0.2s, box-shadow 0.2s;
   }
-
-  .chat-toggle:hover {
-    transform: scale(1.08);
-    box-shadow: 0 6px 24px rgba(37, 99, 235, 0.5);
-  }
-
-  .chat-toggle:active {
-    transform: scale(0.95);
-  }
-
-  /* Chat panel */
-  .chat-panel {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 420px;
-    height: 100dvh;
-    background: var(--card);
-    border-left: 1px solid var(--card-border);
-    z-index: 150;
-    display: flex;
-    flex-direction: column;
-    transform: translateX(100%);
-    transition: transform 0.35s ease;
-  }
-
-  .chat-panel.open {
-    transform: translateX(0);
-  }
-
-  .chat-panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--card-border);
-    flex-shrink: 0;
-  }
-
-  .chat-panel-header span {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .chat-panel-close {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    font-size: 1.3rem;
-    cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 8px;
-    transition: background 0.15s;
-  }
-
-  .chat-panel-close:hover {
-    background: var(--card-border);
-    color: var(--text);
-  }
-
-  .chat-panel iframe {
-    flex: 1;
-    border: none;
-    width: 100%;
-  }
-
-  /* Overlay behind panel on mobile */
-  .chat-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 140;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.35s;
-  }
-
-  .chat-overlay.show {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  @media (max-width: 500px) {
-    .chat-panel {
-      width: 100%;
-    }
-  }
+  .chat-toggle:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(37, 99, 235, 0.5); }
+  .chat-toggle:active { transform: scale(0.95); }
 </style>
 </head>
 <body>
@@ -471,16 +370,12 @@
   </div>
 
   <div class="card">
-    <div class="room-label">Room Number</div>
-    <input
-      type="text"
-      class="room-input"
-      id="roomInput"
-      placeholder="e.g. A11"
-      maxlength="30"
-      autocomplete="off"
-      spellcheck="false"
-    >
+    <div class="field-label">Your Name & Room</div>
+    <div class="field-row">
+      <input type="text" class="name-input" id="nameInput" placeholder="Name (optional)" maxlength="30" autocomplete="off" spellcheck="false">
+      <input type="text" class="room-input" id="roomInput" placeholder="e.g. A11" maxlength="30" autocomplete="off" spellcheck="false">
+    </div>
+    <textarea class="message-input" id="messageInput" placeholder="Add a message (optional)" maxlength="200"></textarea>
 
     <div class="divider"></div>
 
@@ -524,24 +419,50 @@
   <span id="toastMsg"></span>
 </div>
 
-<!-- Chat button -->
 <button class="chat-toggle" id="chatToggle" onclick="toggleChat()" title="Open Chat">💬</button>
 
 <script>
   const roomInput = document.getElementById('roomInput');
+  const nameInput = document.getElementById('nameInput');
+  const messageInput = document.getElementById('messageInput');
   const toast = document.getElementById('toast');
   const toastDot = document.getElementById('toastDot');
   const toastMsg = document.getElementById('toastMsg');
 
-// Apps Script relay URL - replace with your deployed web app URL
-    const RELAY_URL = 'https://script.google.com/macros/s/AKfycbyhsmQ6p5ZOg7rGPsaiiuYkJcPf6vV69_nk4zr1qFzqol2INEhTU_pSHIV40DBv6uIa/exec';
-    const SECRET_KEY = 'nc3rq7ncqr3nnrcq3'; // must match the key in your Apps Script
+  const RELAY_URL = 'PASTE_APPS_SCRIPT_WEB_APP_URL_HERE';
+  const SECRET_KEY = 'PASTE_A_RANDOM_SECRET_HERE';
 
   let toastTimer;
 
+  // Load saved name from cookie
+  const savedName = document.cookie.split('; ').find(c => c.startsWith('sa_name='));
+  if (savedName) nameInput.value = decodeURIComponent(savedName.split('=')[1]);
+
+  // Save name on change
+  nameInput.addEventListener('input', () => {
+    document.cookie = 'sa_name=' + encodeURIComponent(nameInput.value.trim()) + '; max-age=31536000; path=/';
+  });
+
+  function getName() { return nameInput.value.trim(); }
+  function getMessage() { return messageInput.value.trim(); }
+
+  function buildExtra(name, msg) {
+    const parts = [];
+    if (name) parts.push(name);
+    if (msg) parts.push(msg);
+    return parts.length ? ' (' + parts.join(': ') + ')' : '';
+  }
+
+  function showToast(color, text) {
+    toastDot.style.background = color;
+    toastMsg.textContent = text;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
   function sendAlert(color, label) {
     const room = roomInput.value.trim().toUpperCase();
-
     if (!room) {
       roomInput.classList.add('shake');
       roomInput.focus();
@@ -549,93 +470,51 @@
       return;
     }
 
-    const colors = {
-      green: '#22c55e',
-      yellow: '#eab308',
-      red: '#ef4444',
-      blue: '#60a5fa'
-    };
+    const colors = { green: '#22c55e', yellow: '#eab308', red: '#ef4444' };
 
     fetch(RELAY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ room: room, level: color, label: label, key: SECRET_KEY })
+      body: JSON.stringify({ room, level: color, label, name: getName(), message: getMessage(), key: SECRET_KEY })
     }).catch(err => console.error('Send failed:', err));
 
-    // Show toast
-    toastDot.style.background = colors[color];
-    toastMsg.textContent = `${room} — ${label} sent`;
-    toast.classList.add('show');
-
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
-
-    // Clear input for next use
+    showToast(colors[color], `${room} — ${label} sent`);
     roomInput.value = '';
+    messageInput.value = '';
     roomInput.focus();
   }
 
   function sendResolved() {
-    const room = document.getElementById('resolvedRoom').value.trim().toUpperCase() || 'No room specified';
-
+    const room = document.getElementById('resolvedRoom').value.trim().toUpperCase();
     fetch(RELAY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ room: room, level: 'blue', label: 'Resolved', key: SECRET_KEY })
+      body: JSON.stringify({ room, level: 'blue', label: 'Resolved', name: getName(), message: '', key: SECRET_KEY })
     }).catch(err => console.error('Send failed:', err));
-
-    toastDot.style.background = '#60a5fa';
-    toastMsg.textContent = `${room} — Resolved sent`;
-    toast.classList.add('show');
-
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
-
+    showToast('#60a5fa', `${room || 'No room'} — Resolved sent`);
     document.getElementById('resolvedRoom').value = '';
-    roomInput.focus();
   }
 
   function sendOMW() {
-    const room = document.getElementById('resolvedRoom').value.trim().toUpperCase() || 'No room specified';
-
+    const room = document.getElementById('resolvedRoom').value.trim().toUpperCase();
     fetch(RELAY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ room: room, level: 'omw', label: 'On My Way', key: SECRET_KEY })
+      body: JSON.stringify({ room, level: 'omw', label: 'On My Way', name: getName(), message: '', key: SECRET_KEY })
     }).catch(err => console.error('Send failed:', err));
-
-    toastDot.style.background = '#fbbf24';
-    toastMsg.textContent = `${room} — On My Way sent`;
-    toast.classList.add('show');
-
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
-
+    showToast('#fbbf24', `${room || 'No room'} — On My Way sent`);
     document.getElementById('resolvedRoom').value = '';
-    roomInput.focus();
   }
 
-  // Allow Enter key to default to yellow (help soon)
   roomInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && roomInput.value.trim()) {
-      sendAlert('yellow', 'Help Soon');
-    }
+    if (e.key === 'Enter' && roomInput.value.trim()) sendAlert('yellow', 'Support');
   });
 
-  // Chat panel
   const CHAT_URL = 'https://chat.google.com/room/AAAAiOwecko?cls=7';
+  function toggleChat() { window.open(CHAT_URL, '_blank'); }
 
-  function toggleChat() {
-    window.open(CHAT_URL, '_blank');
-  }
-
-  // Auto-focus on load
   roomInput.focus();
-
-  // Show warning if relay not configured
-  if (RELAY_URL.includes('PASTE_')) {
-    document.getElementById('demoBanner').style.display = 'block';
-  }
+  if (RELAY_URL.includes('PASTE_')) document.getElementById('demoBanner').style.display = 'block';
 </script>
 </body>
 </html>
