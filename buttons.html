@@ -370,10 +370,10 @@
   </div>
 
   <div class="card">
-    <div class="field-label">Your Name & Room</div>
+    <div class="field-label">Room & Your Name</div>
     <div class="field-row">
-      <input type="text" class="name-input" id="nameInput" placeholder="Name (optional)" maxlength="30" autocomplete="off" spellcheck="false">
       <input type="text" class="room-input" id="roomInput" placeholder="e.g. A11" maxlength="30" autocomplete="off" spellcheck="false">
+      <input type="text" class="name-input" id="nameInput" placeholder="Name (optional)" maxlength="30" autocomplete="off" spellcheck="false">
     </div>
     <textarea class="message-input" id="messageInput" placeholder="Add a message (optional)" maxlength="200"></textarea>
 
@@ -429,10 +429,9 @@
   const toastDot = document.getElementById('toastDot');
   const toastMsg = document.getElementById('toastMsg');
 
-// Apps Script relay URL - replace with your deployed web app URL
-    const RELAY_URL = '';
+  // Apps Script relay URL - replace with your deployed web app URL
+    const RELAY_URL = 'https://script.google.com/macros/s/AKfycbzPmM-Pb7L0hGibIgjoMN6KT0galUGc7yAcntK8KXhAuLvDzs8mIUbag0w3LIqLPKgG/exec';
     const SECRET_KEY = 'nc3rq7ncqr3nnrcq3'; // must match the key in your Apps Script
-
 
   let toastTimer;
 
